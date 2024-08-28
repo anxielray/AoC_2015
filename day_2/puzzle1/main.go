@@ -10,7 +10,7 @@ import (
 
 func main() {
 	//open the file and read as a string...
-	file, err := os.ReadFile("dimensions.txt")
+	file, err := os.ReadFile("../dimensions.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
