@@ -14,7 +14,7 @@ func main() {
 	}
 	directions := string(file)
 	// Test examples
-	fmt.Printf("Santa visited %v homes more than once!\n", countUniqueHouses(directions)) // Output: 2
+	fmt.Printf("Santa visited %v homes!\n", countUniqueHouses(directions)) // Output: 2
 }
 
 // Function to count the number of unique houses visited
@@ -64,7 +64,7 @@ func countUniqueHouses(directions string) int {
 	//count the number of occurrences more than 1...
 	//count = countValuesGreaterThanOne(visitedHomesMap)
 	// Return the number of unique houses visited
-//return count
+	//return count
 	return len(visitedHomesMap)
 }
 
