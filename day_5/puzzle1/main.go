@@ -8,7 +8,7 @@ import(
 
 func main() {
     //Read from the file and extract the content as a string...
-    file, err := os.ReadFile("strings.txt")
+    file, err := os.ReadFile("../strings.txt")
     if err!= nil {
         fmt.Println("Error reading the file:", err)
         return
