@@ -39,23 +39,27 @@ func computeFunctions(instructions string) int {
 	return countLihtBulbs(myGridMap)
 }
 
-//function to create a 2D grid of 1000x1000 cells...
+//function to create a 2D grid of 1000x1000 cells...(ok!)
 func makeGrid() [][]string {
 	var (
 		grid [][]string
 		row  []string
 	)
-	for x := 0; x < 1000; x++ {
-		row = make([]string, 1000)
-		for y := 0; y < 1000; y++ {
+	for x := 0; x < 10; x++ {
+		row = make([]string, 10)
+		for y := 0; y < 10; y++ {
 			row[y] = fmt.Sprintf("%s, %s", strconv.Itoa(x), strconv.Itoa(y))
 		}
 		grid = append(grid, row)
 	}
+	// for _, row := range grid {
+	// 	fmt.Println(row)
+	// }
+
 	return grid
 }
 
-//handling the toggle instruction...
+//handling the toggle instruction...(ok!)
 func turnOnGrid(instruction string, myGridMap map[string]bool) map[string]bool {
 	startingCoordintate := strings.Fields(instruction)[2]
 	lastCoordinate := strings.Fields(instruction)[4]
@@ -74,7 +78,10 @@ func turnOnGrid(instruction string, myGridMap map[string]bool) map[string]bool {
 	return myGridMap
 }
 
-//creat a map to store the lit and unlit bulbs...
+// println("here")
+// os.Exit(0)
+
+//creat a map to store the lit and unlit bulbs...(ok!)
 func createLightMap(grid [][]string) map[string]bool {
 	lightMap := make(map[string]bool)
 	for _, row := range grid {
@@ -85,7 +92,7 @@ func createLightMap(grid [][]string) map[string]bool {
 	return lightMap
 }
 
-//function that will find the key in the map and update the value to true...
+//function that will find the key in the map and update the value to true...(ok!)
 func lightTheBulb(coordinate string, myGridMap map[string]bool) map[string]bool {
 	myGridMap[coordinate] = true
 	return myGridMap
@@ -131,6 +138,7 @@ func toggle(instruction string, myGridMap map[string]bool) map[string]bool {
 			myGridMap[cell] = !myGridMap[cell]
 		}
 	}
+	// println(myGridMap)
 	return myGridMap
 }
 
