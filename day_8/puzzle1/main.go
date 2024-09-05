@@ -33,28 +33,29 @@ func computeDifference(content string) int {
 		// Count the number of characters in code
 		codeChars := len(line)
 
-		// Remove escape sequences to get the actual string in memory
+		// Remove the surrounding double quotes and process escape sequences
 		memoryString := processEscapes(line)
 		memoryChars := len(memoryString)
 
 		totalCodeChars += codeChars
 		totalMemoryChars += memoryChars
 	}
-	println(totalCodeChars)
-	println(totalMemoryChars)
 	return totalCodeChars - totalMemoryChars
 }
 
 // Process the escape sequences and hexadecimal escapes in the string
 func processEscapes(line string) string {
+	// Remove surrounding double quotes
+	if len(line) > 0 {
+		line = line[1 : len(line)-1] // Remove the quotes
+	}
+
 	// Convert hexadecimal escape sequences
 	line = hexadecimalEscape(line)
 	// Replace escaped quotes
 	line = quotationEscape(line)
 	// Remove escaped backslashes
 	line = dealWithEscape(line)
-	// Remove surrounding double quotes
-	line = line[1 : len(line)-1]
 
 	return line
 }
@@ -69,11 +70,8 @@ func hexadecimalEscape(line string) string {
 	pattern := regexp.MustCompile(`\\x([0-9a-fA-F]{2})`)
 	return pattern.ReplaceAllStringFunc(line, func(match string) string {
 		hex := match[2:] // Remove the "\x" prefix
-		value, err := strconv.ParseInt(hex, 16, 8)
-		if err != nil {
-			return match
-		}
-		return string(rune(value))
+		value, _ := strconv.ParseInt(hex, 16, 8)
+		return string(value)
 	})
 }
 
