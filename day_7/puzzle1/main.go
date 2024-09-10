@@ -19,7 +19,7 @@ func main() {
 	// fmt.Println("The final map is:")
 	// for key, value := range computeFunctions(bitWiseLogicGates) {
 	fmt.Printf("The final signal assigned to wire a is %v\n", computeFunctions(bitWiseLogicGates))
-	// 	fmt.Printf("%s : %v\n", key, value)
+	// fmt.Printf("%s : %v\n", key, value)
 	// }
 }
 
@@ -62,7 +62,7 @@ GAP ANALYSIS
 - return the value of wire a
 */
 
-func computeFunctions(bitWiseLogicGates string) int {
+func computeFunctions(bitWiseLogicGates string) map[string]int {
 	//loop through the content to extract the instructions line by line...
 
 	//create the map with all the wires in from the file...
@@ -73,35 +73,84 @@ func computeFunctions(bitWiseLogicGates string) int {
 		if strings.Contains(line, "AND") {
 			//perform the AND operation...
 			wireMap = AND(line, wireMap)
-		}
-		if strings.Contains(line, "OR") {
+		} else if strings.Contains(line, "OR") {
 			//perform the OR operation...
 			wireMap = OR(line, wireMap)
 
-		}
-		if strings.Contains(line, "LSHIFT") {
+		} else if strings.Contains(line, "LSHIFT") {
 			//perform the left-shift operation...
-			// wireMap = AND(line, wireMap)
+			wireMap = LSHIFT(line, wireMap)
 
-		}
-		if strings.Contains(line, "RSHIFT") {
+		} else if strings.Contains(line, "RSHIFT") {
 			//perform the right-shift operation...
-			// wireMap = AND(line, wireMap)
+			wireMap = RSHIFT(line, wireMap)
 
-		}
-		if strings.Contains(line, "NOT") {
+		} else if strings.Contains(line, "NOT") {
 			//perform the NOT operation...
 			wireMap = NOT(line, wireMap)
-		}
-
-		//when direct assignment is done...
-		if len(strings.Fields(line)) == 3 {
+		} else if len(strings.Fields(line)) == 3 {
 			num, _ := strconv.Atoi(strings.Fields(line)[0])
 			wireMap[strings.Fields(line)[2]] = num
 		}
-
+		continue
 	}
-	return wireMap["a"]
+	return wireMap //["b"]
+}
+
+//function to handle the lshift operation...
+func LSHIFT(line string, wireMap map[string]int) map[string]int {
+	//line: gz LSHIFT 15 -> hd
+	valueA := strings.Fields(line)[0]
+	benefactor := strings.Fields(line)[4]
+	var (
+		valueAint     int
+		benefactorint int
+	)
+	//find the values(numbers) of the wires from the map
+	for k, v := range wireMap {
+		if k == valueA {
+			valueAint = v
+		} else if k == benefactor {
+			benefactorint = v
+		}
+	}
+	shift, _ := strconv.Atoi(strings.Fields(line)[2])
+	benefactorint += bitwiseLshift(valueAint, shift)
+	wireMap[benefactor] += benefactorint
+	return wireMap
+}
+
+//create a function to perform the bitwise lshift operation...
+func bitwiseLshift(n int, shift int) int {
+	return n << shift & 0xFFFF
+}
+
+//function to handle the lshift operation...
+func RSHIFT(line string, wireMap map[string]int) map[string]int {
+	//line: gz RSHIFT 15 -> hd
+	valueA := strings.Fields(line)[0]
+	benefactor := strings.Fields(line)[4]
+	var (
+		valueAint     int
+		benefactorint int
+	)
+	//find the values(numbers) of the wires from the map
+	for k, v := range wireMap {
+		if k == valueA {
+			valueAint = v
+		} else if k == benefactor {
+			benefactorint = v
+		}
+	}
+	shift, _ := strconv.Atoi(strings.Fields(line)[2])
+	benefactorint += bitwiseRshift(valueAint, shift)
+	wireMap[benefactor] += benefactorint
+	return wireMap
+}
+
+//create a function to perform the bitwise lshift operation...
+func bitwiseRshift(n, shift int) int {
+	return n >> shift & 0xFFFF
 }
 
 //create a function to perform the bitWise AND operation...
