@@ -11,7 +11,6 @@ func lookAndSay(s string) string {
     var result strings.Builder
     i := 0
     length := len(s)
-
     for i < length {
         count := 1
         for i+1 < length && s[i] == s[i+1] {
